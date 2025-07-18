@@ -17,11 +17,22 @@ class Todotile extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Container(
         padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(color: Colors.amberAccent),
+        decoration: BoxDecoration(
+          color: Colors.amberAccent,
+          borderRadius: BorderRadius.circular(10),
+        ),
+
         child: Row(
           children: [
-            Checkbox(value: valueOfCheck, onChanged: (value) => change(value)),
-            Text(toDoName),
+            Checkbox(value: valueOfCheck, onChanged: change),
+            Text(
+              toDoName,
+              style: TextStyle(
+                decoration: valueOfCheck
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
+              ),
+            ),
           ],
         ),
       ),

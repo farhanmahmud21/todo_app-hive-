@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:to_do/TodoTile.dart';
+import 'package:to_do/utils/dialog_box.dart';
 
 void main() {
-  runApp(ToDoApp());
+  runApp(MaterialApp(debugShowCheckedModeBanner: false, home: ToDoApp()));
 }
 
 class ToDoApp extends StatefulWidget {
@@ -23,29 +24,43 @@ class _ToDoAppState extends State<ToDoApp> {
     });
   }
 
+  void createTodo() {
+    print('alert dialog show now');
+    ;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DialogBox();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'ToDo App',
-      home: Scaffold(
-        backgroundColor: Colors.yellow[200],
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Todo App'),
-          backgroundColor: Colors.yellow,
-          elevation: 2,
-        ),
-        body: ListView.builder(
-          itemCount: todos.length,
-          itemBuilder: (context, index) {
-            return Todotile(
-              valueOfCheck: todos[index][1],
-              change: (value) => onChange(index),
-              toDoName: todos[index][0],
-            );
-          },
-        ),
+    return Scaffold(
+      backgroundColor: Colors.yellow[200],
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Todo App'),
+        backgroundColor: Colors.yellow,
+        elevation: 2,
+      ),
+      floatingActionButton: FloatingActionButton.small(
+        shape: OvalBorder(side: BorderSide(color: Colors.yellow)),
+        backgroundColor: Colors.yellow,
+        elevation: 2,
+        onPressed: createTodo,
+        child: Icon(Icons.add),
+      ),
+      body: ListView.builder(
+        itemCount: todos.length,
+        itemBuilder: (context, index) {
+          return Todotile(
+            valueOfCheck: todos[index][1],
+            change: (value) => onChange(index),
+            toDoName: todos[index][0],
+          );
+        },
       ),
     );
   }
