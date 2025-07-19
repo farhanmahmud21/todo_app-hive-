@@ -14,6 +14,8 @@ class ToDoApp extends StatefulWidget {
 }
 
 class _ToDoAppState extends State<ToDoApp> {
+  TextEditingController taskName = TextEditingController();
+
   List todos = [
     ['tutorial', false],
     ['Cricket', true],
@@ -24,13 +26,20 @@ class _ToDoAppState extends State<ToDoApp> {
     });
   }
 
+  void saveTask() {
+    setState(() {
+      todos.add([taskName.text, false]);
+      taskName.clear();
+    });
+  }
+
   void createTodo() {
     print('alert dialog show now');
     ;
     showDialog(
       context: context,
       builder: (context) {
-        return DialogBox();
+        return DialogBox(save: saveTask, controller: taskName);
       },
     );
   }
