@@ -33,6 +33,12 @@ class _ToDoAppState extends State<ToDoApp> {
     });
   }
 
+  void deleteTask(int index) {
+    setState(() {
+      todos.removeAt(index);
+    });
+  }
+
   void createTodo() {
     print('alert dialog show now');
     ;
@@ -65,6 +71,7 @@ class _ToDoAppState extends State<ToDoApp> {
         itemCount: todos.length,
         itemBuilder: (context, index) {
           return Todotile(
+            delete: (value) => deleteTask(index),
             valueOfCheck: todos[index][1],
             change: (value) => onChange(index),
             toDoName: todos[index][0],
