@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:to_do/TodoTile.dart';
+import 'package:to_do/data/database.dart';
 import 'package:to_do/utils/dialog_box.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+
+  var box = await Hive.openBox('mybox');
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: ToDoApp()));
 }
 
@@ -14,29 +20,41 @@ class ToDoApp extends StatefulWidget {
 }
 
 class _ToDoAppState extends State<ToDoApp> {
-  TextEditingController taskName = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (_mybox.get('TODOLIST') == null) {
+      db.createIntialData();
+    } else {
+      db.loadData();
+    }
+  }
 
-  List todos = [
-    ['tutorial', false],
-    ['Cricket', true],
-  ];
+  TextEditingController taskName = TextEditingController();
+  var _mybox = Hive.box('mybox');
+  ToDoDatabase db = ToDoDatabase();
+
   void onChange(int index) {
     setState(() {
-      todos[index][1] = !todos[index][1];
+      db.todos[index][1] = !db.todos[index][1];
     });
+    db.updateData();
   }
 
   void saveTask() {
     setState(() {
-      todos.add([taskName.text, false]);
+      db.todos.add([taskName.text, false]);
       taskName.clear();
     });
+    db.updateData();
   }
 
   void deleteTask(int index) {
     setState(() {
-      todos.removeAt(index);
+      db.todos.removeAt(index);
     });
+    db.updateData();
   }
 
   void createTodo() {
@@ -68,13 +86,13 @@ class _ToDoAppState extends State<ToDoApp> {
         child: Icon(Icons.add),
       ),
       body: ListView.builder(
-        itemCount: todos.length,
+        itemCount: db.todos.length,
         itemBuilder: (context, index) {
           return Todotile(
             delete: (value) => deleteTask(index),
-            valueOfCheck: todos[index][1],
+            valueOfCheck: db.todos[index][1],
             change: (value) => onChange(index),
-            toDoName: todos[index][0],
+            toDoName: db.todos[index][0],
           );
         },
       ),

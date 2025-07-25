@@ -22,7 +22,10 @@ class DialogBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: save,
+                  onPressed: () {
+                    save();
+                    Navigator.pop(context);
+                  },
 
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.yellow,
