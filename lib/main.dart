@@ -22,7 +22,6 @@ class ToDoApp extends StatefulWidget {
 class _ToDoAppState extends State<ToDoApp> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (_mybox.get('TODOLIST') == null) {
       db.createIntialData();
